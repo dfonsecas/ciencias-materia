@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  html,body{margin:0}
+  body{font:14px system-ui,-apple-system,"Segoe UI",sans-serif;background:#faf9f7}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Materia — Guía de estudio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* Layout: notebook-style study guide — sticky tab nav, one reading column per section,
+   content color-coded (físico=azul, químico=coral, intensiva=teal, extensiva=ámbar). */
+:root{
+  --bg:#eef2f6; --surface:#ffffff; --surface-2:#f6f9fb;
+  --fg:#15202b; --muted:#5a6a78; --border:#d9e1e9; --border-strong:#bcc8d4;
+  --accent:#0d7b86; --accent-ink:#0a5d66; --accent-soft:#d6edef;
+  --fisico:#2660b4; --fisico-soft:#dde8f8;
+  --quimico:#cf4436; --quimico-soft:#fadfdb;
+  --intensiva:#0e8a7d; --intensiva-soft:#d4eeea;
+  --extensiva:#bd7a12; --extensiva-soft:#f6e6c8;
+  --solido:#6b5bd2; --liquido:#2b8fc9; --gaseoso:#d98324;
+  --good:#1f8a53; --good-soft:#d8efe2; --bad:#cf4436; --bad-soft:#fadfdb;
+  --shadow:0 1px 2px rgba(20,32,43,.06),0 6px 20px rgba(20,32,43,.07);
+  --radius:16px;
+  --font-display:"Fredoka","Trebuchet MS",sans-serif;
+  --font-body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f161d; --surface:#18212b; --surface-2:#141c25;
+  --fg:#e7eef4; --muted:#9bacba; --border:#2a3744; --border-strong:#3a4b5a;
+  --accent:#36b7c1; --accent-ink:#8fe0e6; --accent-soft:#143a3e;
+  --fisico:#6aa6ef; --fisico-soft:#16304f;
+  --quimico:#ef8278; --quimico-soft:#45211d;
+  --intensiva:#45c3b4; --intensiva-soft:#113c38;
+  --extensiva:#e2ab54; --extensiva-soft:#412f12;
+  --solido:#9d90ee; --liquido:#5cb4e8; --gaseoso:#e8a257;
+  --good:#52c488; --good-soft:#123122; --bad:#ef8278; --bad-soft:#45211d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f161d; --surface:#18212b; --surface-2:#141c25;
+  --fg:#e7eef4; --muted:#9bacba; --border:#2a3744; --border-strong:#3a4b5a;
+  --accent:#36b7c1; --accent-ink:#8fe0e6; --accent-soft:#143a3e;
+  --fisico:#6aa6ef; --fisico-soft:#16304f;
+  --quimico:#ef8278; --quimico-soft:#45211d;
+  --intensiva:#45c3b4; --intensiva-soft:#113c38;
+  --extensiva:#e2ab54; --extensiva-soft:#412f12;
+  --solido:#9d90ee; --liquido:#5cb4e8; --gaseoso:#e8a257;
+  --good:#52c488; --good-soft:#123122; --bad:#ef8278; --bad-soft:#45211d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);line-height:1.55;font-size:16px}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent-ink)}
+.wrap{max-width:860px;margin:0 auto;padding-inline:18px;padding-block:0}
+
+/* header */
+header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-ink) 100%);color:#fff}
+header .wrap{padding-block:26px 22px}
+.eyebrow{font-family:var(--font-display);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:12.5px;opacity:.9}
+.back{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-family:var(--font-display);font-weight:500;font-size:13.5px;opacity:.92;margin-bottom:6px}
+.back:hover{opacity:1;text-decoration:underline}
+header h1{font-size:clamp(30px,7vw,46px);font-weight:700;margin-top:4px;color:#fff}
+header p.sub{margin-top:8px;font-size:15.5px;opacity:.95;max-width:60ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.fact{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 13px;font-size:13.5px;font-weight:700}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.nav-scroll{max-width:860px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:8px 12px;scrollbar-width:thin}
+.nav-scroll button{flex:0 0 auto;border:1px solid transparent;background:transparent;color:var(--muted);font-family:var(--font-display);font-weight:500;font-size:14px;padding:7px 13px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.nav-scroll button:hover{background:var(--surface-2);color:var(--fg)}
+.nav-scroll button[aria-selected="true"]{background:var(--accent-soft);color:var(--accent-ink);border-color:var(--accent)}
+.toggle-theme{margin-left:auto;flex:0 0 auto}
+
+section.panel{padding-block:30px 44px}
+section.panel:focus{outline:none}
+.lead{font-size:17px;color:var(--muted);max-width:62ch;margin-top:6px}
+h2.sec{font-size:clamp(23px,5vw,30px);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec-tag{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 9px;border-radius:7px}
+h3.blk{font-size:19px;margin-top:28px}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card + .card{margin-top:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:14px}
+.note{background:var(--surface-2);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;margin-top:14px;font-size:15px}
+.note b{color:var(--accent-ink)}
+ul.clean{margin:10px 0 0;padding-left:20px}
+ul.clean li{margin-bottom:6px}
+.def{font-size:15px}
+.def b{font-family:var(--font-display);font-weight:600}
+
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-display);font-weight:600;font-size:12.5px;padding:3px 10px;border-radius:999px;border:1px solid}
+.c-fisico{color:var(--fisico);background:var(--fisico-soft);border-color:var(--fisico)}
+.c-quimico{color:var(--quimico);background:var(--quimico-soft);border-color:var(--quimico)}
+.c-intensiva{color:var(--intensiva);background:var(--intensiva-soft);border-color:var(--intensiva)}
+.c-extensiva{color:var(--extensiva);background:var(--extensiva-soft);border-color:var(--extensiva)}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;margin-top:14px;border:1px solid var(--border);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:460px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border)}
+thead th{background:var(--surface-2);font-family:var(--font-display);font-weight:600;position:sticky;top:0}
+tbody tr:last-child td{border-bottom:none}
+td .chip{font-size:11.5px;padding:2px 8px}
+
+/* property reference */
+.props{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:14px}
+.prop{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 13px}
+.prop h4{font-size:15.5px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.prop p{font-size:13.5px;color:var(--muted);margin-top:5px}
+.prop .tags{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+
+/* states diagram */
+.states{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.state-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--surface)}
+.state-card header{padding:9px;color:#fff;text-align:center;font-family:var(--font-display);font-weight:600;font-size:15px;background:none}
+.st-s header{background:var(--solido)} .st-l header{background:var(--liquido)} .st-g header{background:var(--gaseoso)}
+.state-card .body{padding:11px}
+.state-card svg{display:block;width:100%;height:auto;border-radius:8px;background:var(--surface-2)}
+.state-card ul{margin:10px 0 0;padding-left:17px;font-size:13px}
+.state-card li{margin-bottom:4px}
+@media(max-width:520px){.states{grid-template-columns:1fr}}
+
+/* phase diagram */
+.phase{margin-top:16px;overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.phase svg{display:block;width:100%;min-width:500px;height:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:12px;height:3px;border-radius:2px;display:inline-block}
+
+/* practice */
+.quiz-q{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface);margin-top:14px}
+.quiz-q .qn{font-family:var(--font-display);font-weight:600;font-size:12px;color:var(--accent-ink);letter-spacing:.05em}
+.quiz-q .qt{font-weight:700;margin-top:4px;font-size:16px}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{display:flex;align-items:flex-start;gap:9px;text-align:left;width:100%;border:1.5px solid var(--border);background:var(--surface-2);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px;color:var(--fg);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .mk{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-strong);display:grid;place-items:center;font-weight:800;font-size:13px;color:var(--muted)}
+.opt.correct{border-color:var(--good);background:var(--good-soft)}
+.opt.correct .mk{border-color:var(--good);background:var(--good);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .mk{border-color:var(--bad);background:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+.feedback{margin-top:11px;font-size:14px;padding:10px 12px;border-radius:9px;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:var(--good-soft);color:var(--good)}
+.feedback.no{background:var(--bad-soft);color:var(--bad)}
+.feedback b{font-family:var(--font-display)}
+.scorebar{position:sticky;bottom:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 15px;margin-top:16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);flex-wrap:wrap}
+.scorebar .s{font-family:var(--font-display);font-weight:700;font-size:16px}
+.btn{font-family:var(--font-display);font-weight:600;font-size:14px;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:10px;padding:8px 15px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent-ink)}
+.btn:hover{filter:brightness(1.05)}
+
+/* classifier game */
+.sorter{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface);margin-top:14px}
+.sorter .item{font-family:var(--font-display);font-weight:600;font-size:18px;text-align:center;padding:10px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.cats.three{grid-template-columns:repeat(3,1fr)}
+.catbtn{font-family:var(--font-display);font-weight:600;font-size:14px;border:1.5px solid var(--border-strong);background:var(--surface);color:var(--fg);border-radius:10px;padding:11px 8px;cursor:pointer}
+.catbtn:hover:not(:disabled){border-color:var(--accent);background:var(--surface-2)}
+.sorter .prog{font-size:13px;color:var(--muted);margin-top:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.sorter .fb{min-height:20px;font-weight:700;font-size:14px;margin-top:9px}
+.sorter .fb.ok{color:var(--good)} .sorter .fb.no{color:var(--bad)}
+.pill-done{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--border-strong);margin-left:3px}
+.pill-done.hit{background:var(--good)} .pill-done.miss{background:var(--bad)}
+
+.objlist{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.objlist li{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 13px;font-size:14.5px}
+.objlist .k{flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:var(--accent-soft);color:var(--accent-ink);font-family:var(--font-display);font-weight:600;display:grid;place-items:center;font-size:13px}
+footer{color:var(--muted);font-size:13px;text-align:center;padding-block:10px 30px}
+.formula{font-family:"Nunito",serif;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:8px 12px;display:inline-block;margin-top:8px;font-weight:700;letter-spacing:.02em}
+sub{font-size:.72em}
+.hide{display:none!important}
+</style>
+
+<header>
+  <div class="wrap">
+    <a class="back" href="index.html">← Volver al inicio</a>
+    <div class="eyebrow">Ciencias · Sétimo año · Prueba del III período</div>
+    <h1>Materia</h1>
+    <p class="sub">Guía de estudio interactiva: repasá los temas del examen con diagramas, un cuestionario y actividades para clasificar. Tocá cada pestaña y poné a prueba lo que sabés.</p>
+    <div class="facts">
+      <span class="fact">📅 Lunes 12 de octubre · 7:00 a.m.</span>
+      <span class="fact">📊 Vale 30%</span>
+      <span class="fact">🧪 Presentaciones 1 y 2</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-scroll" role="tablist" aria-label="Secciones">
+    <button role="tab" aria-selected="true" data-tab="inicio">Inicio</button>
+    <button role="tab" aria-selected="false" data-tab="que">¿Qué es?</button>
+    <button role="tab" aria-selected="false" data-tab="propiedades">Propiedades</button>
+    <button role="tab" aria-selected="false" data-tab="estados">Estados</button>
+    <button role="tab" aria-selected="false" data-tab="cambios">Cambios</button>
+    <button role="tab" aria-selected="false" data-tab="ambiente">Materiales y ambiente</button>
+    <button role="tab" aria-selected="false" data-tab="practica">Practicá ✏️</button>
+    <button class="toggle-theme" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- INICIO -->
+<section class="panel" id="inicio" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Inicio</span> Lo que vas a repasar</h2>
+  <p class="lead">Estos son los aprendizajes que evalúa la prueba en el tema de Materia. Cuando domines cada uno, listo para el examen.</p>
+  <ul class="objlist">
+    <li><span class="k">1</span><div>Definir qué es la <b>materia</b> y sus características.</div></li>
+    <li><span class="k">2</span><div>Identificar y explicar las propiedades <b>intensivas, extensivas, físicas y químicas</b>.</div></li>
+    <li><span class="k">3</span><div>Reconocer propiedades de la materia y su <b>uso en la vida cotidiana</b>.</div></li>
+    <li><span class="k">4</span><div>Distinguir los <b>estados de agregación</b> y los cambios de la materia.</div></li>
+    <li><span class="k">5</span><div>Explicar qué sucede <b>a nivel microscópico</b> (las partículas) en los cambios de estado.</div></li>
+    <li><span class="k">6</span><div>Explicar la relación entre los <b>tipos de materiales y el cuidado del ambiente</b>.</div></li>
+  </ul>
+  <div class="note"><b>Ojo:</b> las cifras significativas y el redondeo se evalúan de forma transversal: cuidá cómo reportás los resultados numéricos en toda la prueba.</div>
+  <h3 class="blk">¿Cómo usar esta guía?</h3>
+  <div class="card def">
+    Recorré las pestañas <b>¿Qué es?</b> → <b>Propiedades</b> → <b>Estados</b> → <b>Cambios</b> → <b>Materiales y ambiente</b> para estudiar la teoría con sus diagramas. Después pasá a <b>Practicá ✏️</b>: ahí tenés un cuestionario de opción múltiple y tres actividades para clasificar y emparejar, con puntaje y explicaciones al instante.
+  </div>
+</section>
+
+<!-- QUE ES -->
+<section class="panel hide" id="que" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivo 1</span> ¿Qué es la materia?</h2>
+  <p class="lead">La base de todo el tema: entender qué cuenta como materia y cómo la reconocemos.</p>
+  <div class="card">
+    <p class="def" style="font-size:18px"><b>Materia</b> es todo aquello que tiene <b>masa</b> y ocupa un <b>espacio</b> (volumen).</p>
+    <p class="def" style="margin-top:10px;color:var(--muted)">Desde el aire que respirás hasta el agua, una roca o tu propio cuerpo: si tiene masa y ocupa un lugar, es materia.</p>
+  </div>
+  <h3 class="blk">Características de la materia</h3>
+  <div class="grid2">
+    <div class="card def"><b>Posee masa y peso</b><p style="color:var(--muted);margin-top:4px">Tiene una cantidad de materia que se puede pesar.</p></div>
+    <div class="card def"><b>Ocupa un espacio</b><p style="color:var(--muted);margin-top:4px">Tiene volumen; está en algún lugar.</p></div>
+    <div class="card def"><b>Es observable</b><p style="color:var(--muted);margin-top:4px">Podemos percibirla o detectarla.</p></div>
+    <div class="card def"><b>Es medible</b><p style="color:var(--muted);margin-top:4px">Sus cantidades se pueden medir con instrumentos.</p></div>
+  </div>
+  <div class="note"><b>Para el examen:</b> si te preguntan por qué algo "es materia", la respuesta clave es siempre la misma: <b>tiene masa y ocupa un espacio</b>.</div>
+</section>
+
+<!-- PROPIEDADES -->
+<section class="panel hide" id="propiedades" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivos 2 y 3</span> Propiedades de la materia</h2>
+  <p class="lead">Las propiedades se clasifican de dos maneras a la vez: según <b>si dependen de la cantidad</b> y según <b>si cambian la composición</b>.</p>
+
+  <h3 class="blk">Clasificación 1 · ¿Depende de la cantidad?</h3>
+  <div class="grid2">
+    <div class="card">
+      <span class="chip c-intensiva">Intensiva</span>
+      <p class="def" style="margin-top:10px"><b>No</b> dependen del tamaño de la muestra. Son propias de cada sustancia; sirven para identificarla. También se llaman <b>específicas</b>.</p>
+      <p class="def" style="color:var(--muted);margin-top:8px">Ej.: densidad, punto de fusión, color. Un gramo o un kilo de oro tienen la <i>misma</i> densidad.</p>
+    </div>
+    <div class="card">
+      <span class="chip c-extensiva">Extensiva</span>
+      <p class="def" style="margin-top:10px"><b>Sí</b> dependen de la cantidad de muestra. También se llaman <b>generales</b>.</p>
+      <p class="def" style="color:var(--muted);margin-top:8px">Ej.: la masa y la capacidad térmica. Mientras más materia, mayor es el valor.</p>
+    </div>
+  </div>
+
+  <h3 class="blk">Clasificación 2 · ¿Cambia la composición?</h3>
+  <div class="grid2">
+    <div class="card">
+      <span class="chip c-fisico">Física</span>
+      <p class="def" style="margin-top:10px">Se observan o miden <b>sin cambiar la composición</b> del material. Permiten describir, clasificar e identificar sustancias.</p>
+      <p class="def" style="color:var(--muted);margin-top:8px">Ej.: densidad, color, viscosidad, conductividad.</p>
+    </div>
+    <div class="card">
+      <span class="chip c-quimico">Química</span>
+      <p class="def" style="margin-top:10px">Se observan cuando el material <b>cambia su composición</b> y se transforma en una o más sustancias nuevas.</p>
+      <p class="def" style="color:var(--muted);margin-top:8px">Ej.: reactividad, combustión, oxidación, corrosividad.</p>
+    </div>
+  </div>
+  <div class="note"><b>Clave:</b> una misma propiedad tiene las dos etiquetas. La densidad, por ejemplo, es <span class="chip c-intensiva">Intensiva</span> y <span class="chip c-fisico">Física</span> a la vez.</div>
+
+  <h3 class="blk">Propiedades que viste en clase</h3>
+  <p class="def" style="color:var(--muted)">Cada tarjeta trae su definición y sus dos etiquetas. Usalas para la actividad de clasificar.</p>
+  <div class="props" id="propGrid"></div>
+</section>
+
+<!-- ESTADOS -->
+<section class="panel hide" id="estados" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivos 4 y 5</span> Estados de agregación</h2>
+  <p class="lead">El <b>estado de agregación</b> es el ordenamiento de las partículas de un cuerpo. Depende de la <b>energía cinética</b> de las partículas (su movimiento) y de las <b>fuerzas de atracción y repulsión</b> entre ellas.</p>
+
+  <div class="states">
+    <div class="state-card st-s">
+      <header>Sólido</header>
+      <div class="body">
+        <svg viewBox="0 0 120 90" aria-label="Partículas ordenadas y muy juntas"></svg>
+        <ul>
+          <li>Partículas muy juntas; solo <b>vibran</b>.</li>
+          <li>Poca energía cinética.</li>
+          <li>Atracción muy intensa.</li>
+          <li>Forma y volumen <b>definidos</b>.</li>
+          <li><b>Incompresible</b>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="state-card st-l">
+      <header>Líquido</header>
+      <div class="body">
+        <svg viewBox="0 0 120 90" aria-label="Partículas juntas pero desordenadas"></svg>
+        <ul>
+          <li>Más energía cinética que el sólido.</li>
+          <li>Se mueven sin separarse → <b>fluyen</b>.</li>
+          <li>Sin forma definida: adopta la del recipiente.</li>
+          <li>Volumen definido.</li>
+          <li><b>Incompresible</b>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="state-card st-g">
+      <header>Gaseoso</header>
+      <div class="body">
+        <svg viewBox="0 0 120 90" aria-label="Partículas muy separadas"></svg>
+        <ul>
+          <li>Mayor energía cinética.</li>
+          <li>Muy separadas; atracción muy débil.</li>
+          <li>Sin forma ni volumen definidos.</li>
+          <li>Se expanden y llenan el recipiente.</li>
+          <li><b>Compresible</b>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="blk">Comparación rápida</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Característica</th><th>Sólido</th><th>Líquido</th><th>Gaseoso</th></tr></thead>
+      <tbody>
+        <tr><td>Forma y volumen</td><td>Los mantiene</td><td>Adopta la del recipiente</td><td>Adopta la del recipiente</td></tr>
+        <tr><td>¿Fluye?</td><td>No</td><td>Sí</td><td>Sí</td></tr>
+        <tr><td>¿Se expande?</td><td>No</td><td>No</td><td>Sí, llena el recipiente</td></tr>
+        <tr><td>¿Se comprime?</td><td>Casi imposible</td><td>Casi imposible</td><td>Sí</td></tr>
+        <tr><td>Partículas</td><td>Muy juntas (vibran)</td><td>Un poco cerca</td><td>Muy separadas</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="blk">Otros dos estados</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="font-family:var(--font-display);font-size:16px">Plasma <span class="chip" style="color:var(--gaseoso);border-color:var(--gaseoso);background:transparent">4.º estado</span></h4>
+      <p class="def" style="margin-top:8px">Un gas recibe tanta energía (calor o electricidad) que sus átomos se separan en <b>iones positivos y electrones libres</b>. Conduce electricidad, responde a campos magnéticos y emite luz. Es el estado más común del universo (Sol y estrellas).</p>
+    </div>
+    <div class="card">
+      <h4 style="font-family:var(--font-display);font-size:16px">Condensado de Bose-Einstein <span class="chip" style="color:var(--solido);border-color:var(--solido);background:transparent">5.º estado</span></h4>
+      <p class="def" style="margin-top:8px">Átomos enfriados cerca del <b>cero absoluto (−273 °C)</b> pierden su identidad individual y se comportan como una sola "superpartícula". Solo se logra en laboratorios.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CAMBIOS -->
+<section class="panel hide" id="cambios" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivos 4 y 5</span> Cambios de la materia</h2>
+  <p class="lead">La materia cambia por la temperatura, la presión y el contacto con otras sustancias. Hay dos grandes tipos: <span class="chip c-fisico">Físicos</span> y <span class="chip c-quimico">Químicos</span>.</p>
+
+  <h3 class="blk">Cambios físicos</h3>
+  <div class="card">
+    <p class="def">Modifican algunas propiedades <b>pero no la composición</b>: no se forman sustancias nuevas. Son <b>reversibles</b>.</p>
+    <div class="grid2" style="margin-top:12px">
+      <div class="def"><b>Deformación:</b> cambio de forma por una fuerza externa.</div>
+      <div class="def"><b>Dilatación:</b> aumento de volumen al ganar calor.</div>
+      <div class="def"><b>Contracción:</b> disminución de volumen al perder calor.</div>
+      <div class="def"><b>Fragmentación:</b> se parte en trozos; sigue siendo la misma sustancia.</div>
+      <div class="def"><b>Cambio de estado:</b> pasa de un estado de agregación a otro.</div>
+    </div>
+  </div>
+
+  <h3 class="blk">Cambios de estado (son cambios físicos)</h3>
+  <p class="def" style="color:var(--muted)">Ocurren al <b>agregar o eliminar calor</b>, o al cambiar la presión. Se mueven entre sólido, líquido y gaseoso:</p>
+  <div class="phase">
+    <svg id="phaseSvg" viewBox="0 0 560 300" aria-label="Diagrama de cambios de estado entre sólido, líquido y gaseoso"></svg>
+  </div>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--quimico)"></span> Se <b>agrega</b> calor</span>
+    <span><span class="dot" style="background:var(--fisico)"></span> Se <b>elimina</b> calor</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Cambio</th><th>De → a</th><th>Calor</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td><b>Fusión</b></td><td>Sólido → líquido</td><td>Se agrega</td><td>Mantequilla que se derrite</td></tr>
+        <tr><td><b>Solidificación</b></td><td>Líquido → sólido</td><td>Se elimina</td><td>Agua que se vuelve hielo</td></tr>
+        <tr><td><b>Vaporización</b> (evaporación)</td><td>Líquido → gas</td><td>Se agrega</td><td>Ropa húmeda que se seca al sol</td></tr>
+        <tr><td><b>Condensación</b></td><td>Gas → líquido</td><td>Se elimina</td><td>Formación de nubes</td></tr>
+        <tr><td><b>Sublimación</b></td><td>Sólido → gas</td><td>Se agrega</td><td>Hielo seco; nieve en montañas</td></tr>
+        <tr><td><b>Deposición</b> (sublim. inversa)</td><td>Gas → sólido</td><td>Se elimina</td><td>Formación de escarcha</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>A nivel microscópico:</b> al <b>agregar calor</b> las partículas ganan energía, se mueven más y se separan (hacia gas). Al <b>eliminar calor</b> pierden energía, se mueven menos y se juntan (hacia sólido). <br>Entre gas y plasma están la <b>ionización</b> (gas → plasma) y la <b>desionización</b> (plasma → gas).</div>
+
+  <h3 class="blk">Cambios químicos</h3>
+  <div class="card">
+    <p class="def">Alteran la <b>estructura interna</b>: aparecen sustancias nuevas con propiedades distintas. Se rompen y forman enlaces. Son <b>irreversibles</b>.</p>
+    <p class="def" style="margin-top:10px"><b>Señales de que ocurrió un cambio químico:</b></p>
+    <ul class="clean def">
+      <li><b>Formación de un precipitado</b> (un sólido insoluble).</li>
+      <li><b>Cambio de color.</b></li>
+      <li><b>Desprendimiento de gases.</b></li>
+      <li><b>Cambio de temperatura</b>: libera energía (exotérmica) o la absorbe (endotérmica).</li>
+    </ul>
+    <p class="def" style="margin-top:12px"><b>En la vida cotidiana:</b> oxidación, combustión, corrosión y fermentación.</p>
+    <span class="formula">Oxidación del hierro: 4Fe + 3O<sub>2</sub> + 6H<sub>2</sub>O → 4Fe(OH)<sub>3</sub></span>
+  </div>
+  <div class="note"><b>Trampa común:</b> derretir, hervir, romper o doblar son <span class="chip c-fisico">físicos</span> (la sustancia sigue siendo la misma). Quemar, oxidarse, fermentar o corroerse son <span class="chip c-quimico">químicos</span> (aparece algo nuevo).</div>
+</section>
+
+<!-- AMBIENTE -->
+<section class="panel hide" id="ambiente" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivo 6</span> Los materiales y el ambiente</h2>
+  <p class="lead">Costa Rica es reconocida por su liderazgo en sostenibilidad. Elegir bien los materiales y manejar los desechos protege su riqueza natural y sus metas de descarbonización.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4 style="font-family:var(--font-display);font-size:16px">Materiales biodegradables</h4>
+      <p class="def" style="margin-top:8px">Se descomponen <b>naturalmente</b> por la acción de microorganismos y vuelven al ciclo de la naturaleza sin dejar residuos tóxicos.</p>
+      <p class="def" style="color:var(--muted);margin-top:8px"><b>Ejemplos:</b> el bambú y el algodón orgánico.</p>
+    </div>
+    <div class="card">
+      <h4 style="font-family:var(--font-display);font-size:16px">Materiales sostenibles</h4>
+      <p class="def" style="margin-top:8px">Usan <b>fibras recicladas</b> (poliéster y nailon de redes de pesca) o fibras naturales de bajo impacto.</p>
+      <p class="def" style="color:var(--muted);margin-top:8px"><b>Ejemplos:</b> cáñamo, lino y fibras de residuos agrícolas de <b>piña o banano</b>.</p>
+    </div>
+  </div>
+  <div class="note"><b>Conexión con el tema:</b> conocer las <b>propiedades</b> de los materiales (si se oxidan, si son biodegradables, su durabilidad) ayuda a elegir los que menos dañan el ambiente.</div>
+</section>
+
+<!-- PRACTICA -->
+<section class="panel hide" id="practica" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">A practicar</span> Poné a prueba lo que sabés</h2>
+  <p class="lead">Primero el cuestionario de opción múltiple; abajo, tres actividades para clasificar y emparejar. Todo con puntaje y explicación al instante.</p>
+
+  <h3 class="blk">1 · Cuestionario</h3>
+  <div id="quiz"></div>
+  <div class="scorebar">
+    <span class="s" id="quizScore">Puntaje: 0 / 12</span>
+    <button class="btn ghost" id="quizReset">Reiniciar</button>
+  </div>
+
+  <h3 class="blk">2 · Clasificá: ¿Intensiva o Extensiva?</h3>
+  <div class="sorter" id="sortIE"></div>
+
+  <h3 class="blk">3 · Clasificá: ¿Propiedad física o química?</h3>
+  <div class="sorter" id="sortFQ"></div>
+
+  <h3 class="blk">4 · Emparejá: ¿Qué cambio de estado es?</h3>
+  <div class="sorter" id="sortCE"></div>
+</section>
+
+<footer>Guía de estudio hecha con base en las presentaciones de la profesora Dahian Rojas Mora · Liceo HHC Experimental Bilingüe José Figueres Ferrer</footer>
+</main>
+
+<script>
+/* ---------- tema ---------- */
+(function(){
+  var btn=document.getElementById('themeBtn');
+  function cur(){var a=document.documentElement.getAttribute('data-theme');if(a)return a;return matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+  function set(t){document.documentElement.setAttribute('data-theme',t);btn.textContent=t==='dark'?'☀️':'🌙';try{localStorage.setItem('mat-theme',t);}catch(e){}}
+  try{var s=localStorage.getItem('mat-theme');if(s)set(s);else btn.textContent=cur()==='dark'?'☀️':'🌙';}catch(e){btn.textContent=cur()==='dark'?'☀️':'🌙';}
+  btn.addEventListener('click',function(){set(cur()==='dark'?'light':'dark');if(window.redrawDiagrams)window.redrawDiagrams();});
+})();
+
+/* ---------- navegación por pestañas ---------- */
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.nav-scroll [role=tab]'));
+  var panels={};
+  document.querySelectorAll('.panel').forEach(function(p){panels[p.id]=p;});
+  function show(id){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.tab===id?'true':'false');});
+    for(var k in panels){panels[k].classList.toggle('hide',k!==id);}
+    var p=panels[id];if(p){p.focus({preventScroll:true});}
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(location.hash.slice(1)!==id){history.replaceState(null,'','#'+id);}
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab);});});
+  var h=location.hash.slice(1);
+  if(h&&panels[h])show(h);
+})();
+
+/* ---------- propiedades (referencia) ---------- */
+(function(){
+  var props=[
+    ['Punto de fusión','Temperatura a la que un sólido se convierte en líquido.','int','fis'],
+    ['Punto de ebullición','Temperatura a la que un líquido pasa a vapor (gas).','int','fis'],
+    ['Densidad','Masa que cabe en un volumen (ρ = m/V, en g/cm³). La menor densidad flota.','int','fis'],
+    ['Viscosidad','Qué tan "espeso" es un fluido y qué tan lento fluye.','int','fis'],
+    ['Color','Apariencia visual del material (tono, brillo).','int','fis'],
+    ['Solubilidad','Capacidad de una sustancia para disolverse en otra.','int','fis'],
+    ['Masa','Cantidad de materia que tiene un cuerpo.','ext','fis'],
+    ['Capacidad térmica','Calor que necesita un cuerpo para subir 1 grado su temperatura.','ext','fis'],
+    ['Conductividad','Capacidad de transmitir calor o electricidad.','int','fis'],
+    ['Magnetismo','Capacidad de atraer o repeler materiales ferromagnéticos.','int','fis'],
+    ['Ductilidad','Capacidad de estirarse y formar hilos sin romperse.','int','fis'],
+    ['Maleabilidad','Capacidad de formar láminas delgadas sin romperse.','int','fis'],
+    ['Reactividad','Tendencia de una sustancia a reaccionar con otra.','int','qui'],
+    ['Toxicidad','Capacidad de causar daño a un organismo vivo.','int','qui'],
+    ['Corrosividad','Tendencia a deteriorar o destruir materiales por reacciones químicas.','int','qui'],
+    ['Combustión','Reacción con el oxígeno que produce calor y, a menudo, luz.','int','qui'],
+    ['Oxidación','Reacción en la que una sustancia pierde electrones al combinarse con oxígeno.','int','qui']
+  ];
+  var ie={int:['Intensiva','c-intensiva'],ext:['Extensiva','c-extensiva']};
+  var fq={fis:['Física','c-fisico'],qui:['Química','c-quimico']};
+  var html=props.map(function(p){
+    return '<div class="prop"><h4>'+p[0]+'</h4><p>'+p[1]+'</p><div class="tags">'+
+      '<span class="chip '+ie[p[2]][1]+'">'+ie[p[2]][0]+'</span>'+
+      '<span class="chip '+fq[p[3]][1]+'">'+fq[p[3]][0]+'</span></div></div>';
+  }).join('');
+  document.getElementById('propGrid').innerHTML=html;
+})();
+
+/* ---------- diagramas de partículas (estados) ---------- */
+function drawParticles(){
+  function circles(pts,fill){
+    return pts.map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(p[2]||7)+'" fill="'+fill+'"/>';}).join('');
+  }
+  var cards=document.querySelectorAll('.state-card svg');
+  if(!cards.length)return;
+  var cs=getComputedStyle(document.documentElement);
+  var sol=[];for(var r=0;r<4;r++)for(var c=0;c<5;c++)sol.push([16+c*22,18+r*20]);
+  cards[0].innerHTML=circles(sol,cs.getPropertyValue('--solido')||'#6b5bd2');
+  var liq=[[18,55],[34,62],[50,56],[66,64],[82,58],[98,63],[24,74],[42,72],[60,76],[78,72],[96,75],[30,44],[54,42],[88,45],[70,48]];
+  cards[1].innerHTML=circles(liq,cs.getPropertyValue('--liquido')||'#2b8fc9');
+  var gas=[[20,20],[55,16],[92,24],[34,46],[74,42],[104,52],[18,66],[50,70],[88,74],[66,60]];
+  cards[2].innerHTML=circles(gas,cs.getPropertyValue('--gaseoso')||'#d98324');
+}
+
+/* ---------- diagrama de cambios de estado ---------- */
+function drawPhase(){
+  var svg=document.getElementById('phaseSvg');
+  if(!svg)return;
+  var cs=getComputedStyle(document.documentElement);
+  var cSol=cs.getPropertyValue('--solido').trim()||'#6b5bd2';
+  var cLiq=cs.getPropertyValue('--liquido').trim()||'#2b8fc9';
+  var cGas=cs.getPropertyValue('--gaseoso').trim()||'#d98324';
+  var cAdd=cs.getPropertyValue('--quimico').trim()||'#cf4436';
+  var cRem=cs.getPropertyValue('--fisico').trim()||'#2660b4';
+  var cFg=cs.getPropertyValue('--fg').trim()||'#15202b';
+  var cSurf=cs.getPropertyValue('--surface').trim()||'#fff';
+  function node(x,label,color){
+    return '<rect x="'+(x-55)+'" y="118" width="110" height="64" rx="14" fill="'+color+'"/>'+
+      '<text x="'+x+'" y="156" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="600" font-size="19" fill="#fff">'+label+'</text>';
+  }
+  function arc(x1,x2,y,text,color,up){
+    var mid=(x1+x2)/2;
+    var cy=up?y-34:y+34;
+    var path='M '+x1+' '+y+' Q '+mid+' '+cy+' '+x2+' '+y;
+    var ty=up?cy+2:cy+4;
+    return '<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="3" marker-end="url(#ah-'+(up?'u':'d')+'-'+color.replace('#','')+')"/>'+
+      '<rect x="'+(mid-52)+'" y="'+(ty-13)+'" width="104" height="19" rx="9" fill="'+cSurf+'" opacity="0.92"/>'+
+      '<text x="'+mid+'" y="'+(ty+1)+'" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="'+color+'">'+text+'</text>';
+  }
+  function marker(id,color){
+    return '<marker id="'+id+'" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="'+color+'"/></marker>';
+  }
+  var defs='<defs>'+marker('ah-u-'+cAdd.replace('#',''),cAdd)+marker('ah-d-'+cAdd.replace('#',''),cAdd)+
+    marker('ah-u-'+cRem.replace('#',''),cRem)+marker('ah-d-'+cRem.replace('#',''),cRem)+'</defs>';
+  var xS=90,xL=280,xG=470,y=150;
+  var svgHtml=defs+
+    node(xS,'Sólido',cSol)+node(xL,'Líquido',cLiq)+node(xG,'Gaseoso',cGas)+
+    // sólido <-> líquido
+    arc(xS+58,xL-58,y,'Fusión',cAdd,true)+
+    arc(xL-58,xS+58,y,'Solidificación',cRem,false)+
+    // líquido <-> gas
+    arc(xL+58,xG-58,y,'Vaporización',cAdd,true)+
+    arc(xG-58,xL+58,y,'Condensación',cRem,false)+
+    // sólido <-> gas (arco grande arriba)
+    '<path d="M '+(xS)+' 118 Q '+((xS+xG)/2)+' 20 '+(xG)+' 118" fill="none" stroke="'+cAdd+'" stroke-width="3" marker-end="url(#ah-u-'+cAdd.replace('#','')+')"/>'+
+    '<rect x="'+((xS+xG)/2-56)+'" y="36" width="112" height="19" rx="9" fill="'+cSurf+'" opacity="0.92"/>'+
+    '<text x="'+((xS+xG)/2)+'" y="49" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="'+cAdd+'">Sublimación</text>'+
+    '<path d="M '+(xG)+' 112 Q '+((xS+xG)/2)+' 8 '+(xS)+' 112" fill="none" stroke="'+cRem+'" stroke-width="3" marker-end="url(#ah-u-'+cRem.replace('#','')+')"/>'+
+    '<rect x="'+((xS+xG)/2-50)+'" y="12" width="100" height="19" rx="9" fill="'+cSurf+'" opacity="0.92"/>'+
+    '<text x="'+((xS+xG)/2)+'" y="25" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="'+cRem+'">Deposición</text>'+
+    '<text x="280" y="285" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" fill="'+cFg+'" opacity="0.7">← menos calor / energía          más calor / energía →</text>';
+  svg.innerHTML=svgHtml;
+}
+window.redrawDiagrams=function(){drawParticles();drawPhase();};
+window.redrawDiagrams();
+
+/* ---------- cuestionario ---------- */
+(function(){
+  var Q=[
+    {q:'¿Qué es la materia?',o:['Todo lo que se puede ver a simple vista','Todo lo que tiene masa y ocupa un espacio','Solo los objetos sólidos','Todo lo que produce energía'],a:1,e:'Materia es todo lo que tiene masa y ocupa un espacio (volumen).'},
+    {q:'La densidad (ρ = m/V) es una propiedad…',o:['Extensiva, porque depende de la cantidad','Intensiva, porque no depende de la cantidad','Química, porque forma sustancias nuevas','Extensiva y química'],a:1,e:'La densidad es intensiva: un gramo o un kilo de la misma sustancia tienen igual densidad.'},
+    {q:'¿Cuál de estas es una propiedad EXTENSIVA?',o:['La densidad','El punto de fusión','La masa','El color'],a:2,e:'La masa depende de la cantidad de materia, así que es extensiva.'},
+    {q:'El punto de ebullición es el paso de…',o:['Sólido a líquido','Líquido a gas','Gas a líquido','Sólido a gas'],a:1,e:'En el punto de ebullición el líquido pasa a vapor (gas).'},
+    {q:'¿Cuál de estos es un cambio QUÍMICO?',o:['Derretir un cubo de hielo','Romper un vidrio','La oxidación del hierro','Hervir agua'],a:2,e:'La oxidación forma una sustancia nueva (óxido), por eso es química. Los otros son físicos.'},
+    {q:'En el estado GASEOSO, las partículas…',o:['Están muy juntas y solo vibran','Están un poco cerca y fluyen','Están muy separadas y se mueven mucho','No se mueven'],a:2,e:'En el gas las partículas tienen mucha energía cinética y están muy separadas.'},
+    {q:'El paso de gas a líquido se llama…',o:['Condensación','Vaporización','Sublimación','Fusión'],a:0,e:'Gas → líquido es condensación (se elimina calor). Ejemplo: la formación de nubes.'},
+    {q:'La sublimación es el paso de…',o:['Líquido a sólido','Sólido a gas','Gas a sólido','Líquido a gas'],a:1,e:'Sublimación: sólido → gas directamente (ej.: el hielo seco).'},
+    {q:'¿Cuál NO es una señal de un cambio químico?',o:['Formación de un precipitado','Desprendimiento de gases','Cambio de color','Que la sustancia solo cambie de forma'],a:3,e:'Cambiar solo de forma es un cambio físico. Las otras tres sí son señales de cambio químico.'},
+    {q:'Un ejemplo de material BIODEGRADABLE es…',o:['El poliéster reciclado','El bambú','El nailon','El vidrio'],a:1,e:'El bambú y el algodón orgánico se descomponen naturalmente: son biodegradables.'},
+    {q:'El plasma se forma cuando…',o:['Un líquido se enfría mucho','Un gas recibe tanta energía que sus átomos se separan en iones y electrones','Un sólido se comprime','Dos líquidos se mezclan'],a:1,e:'El plasma surge cuando un gas gana tanta energía que se ioniza (iones + electrones libres).'},
+    {q:'Los sólidos son incompresibles porque sus partículas…',o:['Están muy separadas','Se mueven muy rápido','Están muy juntas y solo vibran','No tienen fuerzas de atracción'],a:2,e:'En el sólido las partículas están muy juntas con atracción intensa, por eso casi no se pueden comprimir.'}
+  ];
+  var wrap=document.getElementById('quiz');
+  var scoreEl=document.getElementById('quizScore');
+  var answered={},score=0;
+  function render(){
+    wrap.innerHTML=Q.map(function(item,i){
+      var opts=item.o.map(function(txt,j){
+        return '<button class="opt" data-q="'+i+'" data-o="'+j+'"><span class="mk">'+String.fromCharCode(65+j)+'</span><span>'+txt+'</span></button>';
+      }).join('');
+      return '<div class="quiz-q"><div class="qn">PREGUNTA '+(i+1)+'</div><div class="qt">'+item.q+'</div>'+
+        '<div class="opts">'+opts+'</div><div class="feedback" id="fb-'+i+'"></div></div>';
+    }).join('');
+  }
+  render();
+  wrap.addEventListener('click',function(ev){
+    var b=ev.target.closest('.opt');if(!b)return;
+    var qi=+b.dataset.q,oi=+b.dataset.o;
+    if(answered[qi]!=null)return;
+    answered[qi]=oi;
+    var item=Q[qi];
+    var btns=wrap.querySelectorAll('.opt[data-q="'+qi+'"]');
+    btns.forEach(function(x){
+      x.disabled=true;
+      var j=+x.dataset.o;
+      if(j===item.a)x.classList.add('correct');
+      else if(j===oi)x.classList.add('wrong');
+    });
+    var fb=document.getElementById('fb-'+qi);
+    var ok=oi===item.a;
+    if(ok)score++;
+    fb.className='feedback show '+(ok?'ok':'no');
+    fb.innerHTML=(ok?'<b>¡Correcto! </b>':'<b>Casi. </b>')+item.e;
+    scoreEl.textContent='Puntaje: '+score+' / '+Q.length;
+  });
+  scoreEl.textContent='Puntaje: 0 / '+Q.length;
+  document.getElementById('quizReset').addEventListener('click',function(){answered={};score=0;render();scoreEl.textContent='Puntaje: 0 / '+Q.length;});
+})();
+
+/* ---------- clasificadores / emparejar ---------- */
+function makeSorter(mountId,cfg){
+  var el=document.getElementById(mountId);
+  var idx=0,hits=0,results=[];
+  var pool=cfg.items.slice();
+  function render(){
+    if(idx>=pool.length){
+      el.innerHTML='<div style="text-align:center;padding:10px 4px">'+
+        '<div style="font-family:var(--font-display);font-weight:700;font-size:20px">¡Listo! '+hits+' / '+pool.length+'</div>'+
+        '<div style="color:var(--muted);margin-top:4px">'+(hits===pool.length?'Dominás este tema. 🎉':'Repasá las que fallaste y volvé a intentarlo.')+'</div>'+
+        '<button class="btn ghost" style="margin-top:12px" data-reset="1">Volver a empezar</button></div>';
+      return;
+    }
+    var it=pool[idx];
+    var dots=pool.map(function(_,i){
+      var cls='pill-done';
+      if(results[i]==='hit')cls+=' hit';else if(results[i]==='miss')cls+=' miss';
+      return '<span class="'+cls+'"></span>';
+    }).join('');
+    var btns=cfg.cats.map(function(c){
+      return '<button class="catbtn" data-cat="'+c.key+'">'+c.label+'</button>';
+    }).join('');
+    el.innerHTML='<div class="item">'+it.t+'</div>'+
+      '<div class="cats '+(cfg.cats.length>2?'three':'')+'">'+btns+'</div>'+
+      '<div class="fb" id="'+mountId+'-fb"></div>'+
+      '<div class="prog"><span>'+(idx+1)+' de '+pool.length+'</span><span>'+dots+'</span></div>';
+  }
+  render();
+  el.addEventListener('click',function(ev){
+    if(ev.target.dataset.reset){idx=0;hits=0;results=[];render();return;}
+    var b=ev.target.closest('.catbtn');if(!b)return;
+    var it=pool[idx];
+    var ok=b.dataset.cat===it.cat;
+    if(ok)hits++;
+    results[idx]=ok?'hit':'miss';
+    el.querySelectorAll('.catbtn').forEach(function(x){x.disabled=true;});
+    var fb=document.getElementById(mountId+'-fb');
+    fb.className='fb '+(ok?'ok':'no');
+    var catLabel=cfg.cats.filter(function(c){return c.key===it.cat;})[0].label;
+    fb.innerHTML=(ok?'✓ ¡Correcto! ':'✗ Era '+catLabel+'. ')+(it.e||'');
+    setTimeout(function(){idx++;render();},ok?700:1500);
+  });
+}
+
+makeSorter('sortIE',{
+  cats:[{key:'int',label:'Intensiva'},{key:'ext',label:'Extensiva'}],
+  items:[
+    {t:'Densidad',cat:'int',e:'No depende de la cantidad.'},
+    {t:'Masa',cat:'ext',e:'Más materia, más masa.'},
+    {t:'Punto de ebullición',cat:'int',e:'Es propio de cada sustancia.'},
+    {t:'Capacidad térmica',cat:'ext',e:'Depende de la cantidad de materia.'},
+    {t:'Color',cat:'int',e:'No cambia con la cantidad.'},
+    {t:'Conductividad',cat:'int',e:'Es propia del material.'}
+  ]
+});
+
+makeSorter('sortFQ',{
+  cats:[{key:'fis',label:'Física'},{key:'qui',label:'Química'}],
+  items:[
+    {t:'Densidad',cat:'fis',e:'Se mide sin cambiar la sustancia.'},
+    {t:'Reactividad',cat:'qui',e:'Describe cómo reacciona y se transforma.'},
+    {t:'Ductilidad',cat:'fis',e:'Forma hilos sin cambiar de sustancia.'},
+    {t:'Oxidación',cat:'qui',e:'Forma una sustancia nueva (óxido).'},
+    {t:'Viscosidad',cat:'fis',e:'Se observa sin cambiar la composición.'},
+    {t:'Combustión',cat:'qui',e:'Reacciona con el oxígeno: cambia la composición.'}
+  ]
+});
+
+makeSorter('sortCE',{
+  cats:[{key:'fus',label:'Fusión'},{key:'sol',label:'Solidificación'},{key:'vap',label:'Vaporización'},{key:'con',label:'Condensación'},{key:'sub',label:'Sublimación'},{key:'dep',label:'Deposición'}],
+  items:[
+    {t:'Un cubo de hielo se derrite',cat:'fus',e:'Sólido → líquido.'},
+    {t:'Las nubes se forman',cat:'con',e:'Gas → líquido.'},
+    {t:'La ropa húmeda se seca al sol',cat:'vap',e:'Líquido → gas.'},
+    {t:'El agua se congela',cat:'sol',e:'Líquido → sólido.'},
+    {t:'El hielo seco libera "humo"',cat:'sub',e:'Sólido → gas directamente.'},
+    {t:'Se forma escarcha en una ventana fría',cat:'dep',e:'Gas → sólido directamente.'}
+  ]
+});
+</script>
+
+</body>
+</html>

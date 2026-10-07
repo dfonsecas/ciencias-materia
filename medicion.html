@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  html,body{margin:0}
+  body{font:14px system-ui,-apple-system,"Segoe UI",sans-serif;background:#faf9f7}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Procesos de medición — Guía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* Misma familia de diseño que la guía de Materia; acento índigo para distinguir el tema de Medición.
+   Color por rol: coeficiente=azul, exponente=naranja, fundamental=teal, derivada=violeta. */
+:root{
+  --bg:#edf0f7; --surface:#ffffff; --surface-2:#f5f7fc;
+  --fg:#17192b; --muted:#5c627a; --border:#dbe0ee; --border-strong:#bdc4dc;
+  --accent:#3f51d6; --accent-ink:#2f3cae; --accent-soft:#e0e4fb;
+  --coef:#2660b4; --coef-soft:#dde8f8;
+  --expo:#c9741a; --expo-soft:#f6e6cf;
+  --fund:#0e8a7d; --fund-soft:#d4eeea;
+  --deriv:#7a4fd0; --deriv-soft:#e7ddf8;
+  --good:#1f8a53; --good-soft:#d8efe2; --bad:#cf4436; --bad-soft:#fadfdb;
+  --shadow:0 1px 2px rgba(23,25,43,.06),0 6px 20px rgba(23,25,43,.07);
+  --radius:16px;
+  --font-display:"Fredoka","Trebuchet MS",sans-serif;
+  --font-body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1320; --surface:#191d2e; --surface-2:#141827;
+  --fg:#e8eaf4; --muted:#9ba2bd; --border:#2b3048; --border-strong:#3c4463;
+  --accent:#7d8bf2; --accent-ink:#aab4f7; --accent-soft:#242a4a;
+  --coef:#6aa6ef; --coef-soft:#16304f;
+  --expo:#e2a655; --expo-soft:#3e2d12;
+  --fund:#45c3b4; --fund-soft:#113c38;
+  --deriv:#b296ef; --deriv-soft:#2c2347;
+  --good:#52c488; --good-soft:#123122; --bad:#ef8278; --bad-soft:#45211d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f1320; --surface:#191d2e; --surface-2:#141827;
+  --fg:#e8eaf4; --muted:#9ba2bd; --border:#2b3048; --border-strong:#3c4463;
+  --accent:#7d8bf2; --accent-ink:#aab4f7; --accent-soft:#242a4a;
+  --coef:#6aa6ef; --coef-soft:#16304f;
+  --expo:#e2a655; --expo-soft:#3e2d12;
+  --fund:#45c3b4; --fund-soft:#113c38;
+  --deriv:#b296ef; --deriv-soft:#2c2347;
+  --good:#52c488; --good-soft:#123122; --bad:#ef8278; --bad-soft:#45211d;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);line-height:1.55;font-size:16px}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent-ink)}
+.wrap{max-width:860px;margin:0 auto;padding-inline:18px;padding-block:0}
+header{background:linear-gradient(135deg,var(--accent) 0%,var(--accent-ink) 100%);color:#fff}
+header .wrap{padding-block:26px 22px}
+.eyebrow{font-family:var(--font-display);font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:12.5px;opacity:.9}
+.back{display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-family:var(--font-display);font-weight:500;font-size:13.5px;opacity:.92;margin-bottom:6px}
+.back:hover{opacity:1;text-decoration:underline}
+header h1{font-size:clamp(28px,6.5vw,44px);font-weight:700;margin-top:4px;color:#fff}
+header p.sub{margin-top:8px;font-size:15.5px;opacity:.95;max-width:60ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.fact{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 13px;font-size:13.5px;font-weight:700}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
+.nav-scroll{max-width:860px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:8px 12px;scrollbar-width:thin}
+.nav-scroll button{flex:0 0 auto;border:1px solid transparent;background:transparent;color:var(--muted);font-family:var(--font-display);font-weight:500;font-size:14px;padding:7px 13px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.nav-scroll button:hover{background:var(--surface-2);color:var(--fg)}
+.nav-scroll button[aria-selected="true"]{background:var(--accent-soft);color:var(--accent-ink);border-color:var(--accent)}
+.toggle-theme{margin-left:auto;flex:0 0 auto}
+section.panel{padding-block:30px 44px}
+section.panel:focus{outline:none}
+.lead{font-size:17px;color:var(--muted);max-width:62ch;margin-top:6px}
+h2.sec{font-size:clamp(22px,5vw,30px);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec-tag{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 9px;border-radius:7px}
+h3.blk{font-size:19px;margin-top:28px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.card + .card{margin-top:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:14px}
+.note{background:var(--surface-2);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;margin-top:14px;font-size:15px}
+.note b{color:var(--accent-ink)}
+ul.clean{margin:10px 0 0;padding-left:20px}
+ul.clean li{margin-bottom:6px}
+.def{font-size:15px}
+.def b{font-family:var(--font-display);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-display);font-weight:600;font-size:12.5px;padding:3px 10px;border-radius:999px;border:1px solid}
+.c-fund{color:var(--fund);background:var(--fund-soft);border-color:var(--fund)}
+.c-deriv{color:var(--deriv);background:var(--deriv-soft);border-color:var(--deriv)}
+.tbl-wrap{overflow-x:auto;margin-top:14px;border:1px solid var(--border);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:440px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border)}
+thead th{background:var(--surface-2);font-family:var(--font-display);font-weight:600}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+code,.mono{font-family:"Nunito",ui-monospace,monospace;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:1px 6px;font-weight:700}
+sub{font-size:.72em}sup{font-size:.72em}
+.steps{counter-reset:s;margin-top:14px;display:grid;gap:10px}
+.step{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.step::before{counter-increment:s;content:counter(s);flex:0 0 auto;width:28px;height:28px;border-radius:9px;background:var(--accent);color:#fff;font-family:var(--font-display);font-weight:600;display:grid;place-items:center;font-size:15px}
+.step .st-body{font-size:14.5px}
+.step .st-body b{font-family:var(--font-display)}
+.worked{background:var(--surface-2);border:1px dashed var(--border-strong);border-radius:12px;padding:14px;margin-top:14px;font-size:15px}
+.worked .eq{font-weight:700;font-size:16px;margin-top:6px;letter-spacing:.01em}
+.anatomy{display:grid;place-items:center;margin-top:14px}
+.anatomy svg{width:100%;max-width:520px;height:auto}
+.objlist{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.objlist li{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 13px;font-size:14.5px}
+.objlist .k{flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:var(--accent-soft);color:var(--accent-ink);font-family:var(--font-display);font-weight:600;display:grid;place-items:center;font-size:13px}
+/* practica */
+.quiz-q{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface);margin-top:14px}
+.quiz-q .qn{font-family:var(--font-display);font-weight:600;font-size:12px;color:var(--accent-ink);letter-spacing:.05em}
+.quiz-q .qt{font-weight:700;margin-top:4px;font-size:16px}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{display:flex;align-items:flex-start;gap:9px;text-align:left;width:100%;border:1.5px solid var(--border);background:var(--surface-2);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px;color:var(--fg);cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .mk{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-strong);display:grid;place-items:center;font-weight:800;font-size:13px;color:var(--muted)}
+.opt.correct{border-color:var(--good);background:var(--good-soft)}
+.opt.correct .mk{border-color:var(--good);background:var(--good);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .mk{border-color:var(--bad);background:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+.feedback{margin-top:11px;font-size:14px;padding:10px 12px;border-radius:9px;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:var(--good-soft);color:var(--good)}
+.feedback.no{background:var(--bad-soft);color:var(--bad)}
+.feedback b{font-family:var(--font-display)}
+.scorebar{position:sticky;bottom:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 15px;margin-top:16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);flex-wrap:wrap}
+.scorebar .s{font-family:var(--font-display);font-weight:700;font-size:16px}
+.btn{font-family:var(--font-display);font-weight:600;font-size:14px;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:10px;padding:8px 15px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent-ink)}
+.btn:hover{filter:brightness(1.05)}
+.sorter{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--surface);margin-top:14px}
+.sorter .item{font-family:var(--font-display);font-weight:600;font-size:18px;text-align:center;padding:12px 10px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.catbtn{font-family:var(--font-display);font-weight:600;font-size:14px;border:1.5px solid var(--border-strong);background:var(--surface);color:var(--fg);border-radius:10px;padding:11px 8px;cursor:pointer}
+.catbtn:hover:not(:disabled){border-color:var(--accent);background:var(--surface-2)}
+.sorter .prog{font-size:13px;color:var(--muted);margin-top:11px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.sorter .fb{min-height:20px;font-weight:700;font-size:14px;margin-top:9px}
+.sorter .fb.ok{color:var(--good)} .sorter .fb.no{color:var(--bad)}
+.pill-done{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--border-strong);margin-left:3px}
+.pill-done.hit{background:var(--good)} .pill-done.miss{background:var(--bad)}
+footer{color:var(--muted);font-size:13px;text-align:center;padding-block:10px 30px}
+.hide{display:none!important}
+</style>
+
+<header>
+  <div class="wrap">
+    <a class="back" href="index.html">← Volver al inicio</a>
+    <div class="eyebrow">Ciencias · Sétimo año · Prueba del III período</div>
+    <h1>Procesos de medición</h1>
+    <p class="sub">Notación científica y decimal, unidades y prefijos del SI, y los cinco tipos de conversiones. Con diagramas, cuestionario y actividades para practicar.</p>
+    <div class="facts">
+      <span class="fact">📅 Lunes 12 de octubre · 7:00 a.m.</span>
+      <span class="fact">📊 Vale 30%</span>
+      <span class="fact">📐 Folletos 1 y 2</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-scroll" role="tablist" aria-label="Secciones">
+    <button role="tab" aria-selected="true" data-tab="inicio">Inicio</button>
+    <button role="tab" aria-selected="false" data-tab="notacion">Notación científica</button>
+    <button role="tab" aria-selected="false" data-tab="unidades">Unidades y prefijos</button>
+    <button role="tab" aria-selected="false" data-tab="conversiones">Conversiones</button>
+    <button role="tab" aria-selected="false" data-tab="temperatura">Temperatura</button>
+    <button role="tab" aria-selected="false" data-tab="cifras">Cifras significativas</button>
+    <button role="tab" aria-selected="false" data-tab="practica">Practicá ✏️</button>
+    <button class="toggle-theme" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema">🌙</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- INICIO -->
+<section class="panel" id="inicio" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Inicio</span> Lo que vas a repasar</h2>
+  <p class="lead">Estos son los aprendizajes que evalúa la prueba en Procesos de medición. Dominalos y listo para el examen.</p>
+  <ul class="objlist">
+    <li><span class="k">1</span><div>Reconocer y aplicar la <b>notación científica</b> y sus reglas.</div></li>
+    <li><span class="k">2</span><div>Convertir de <b>notación decimal a científica y viceversa</b>.</div></li>
+    <li><span class="k">3</span><div>Explicar el <b>Sistema Internacional de Unidades (SI)</b> y la metrología.</div></li>
+    <li><span class="k">4</span><div>Identificar <b>unidades fundamentales, derivadas y los prefijos</b> del SI.</div></li>
+    <li><span class="k">5</span><div>Aplicar <b>factores de conversión</b>: temperatura, unidades dadas, fundamentales, con prefijos y derivadas.</div></li>
+  </ul>
+  <div class="note"><b>Transversal:</b> las <b>cifras significativas</b> y el <b>redondeo</b> se evalúan en toda la prueba. Siempre reportá los resultados con sus unidades y con la cantidad correcta de cifras.</div>
+  <div class="card def" style="margin-top:14px">
+    Recorré las pestañas <b>Notación científica</b> → <b>Unidades y prefijos</b> → <b>Conversiones</b> → <b>Temperatura</b> → <b>Cifras significativas</b> para estudiar la teoría con ejemplos resueltos. Después pasá a <b>Practicá ✏️</b>: cuestionario y actividades con puntaje y explicación al instante.
+  </div>
+</section>
+
+<!-- NOTACION -->
+<section class="panel hide" id="notacion" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivos 1 y 2</span> Notación científica</h2>
+  <p class="lead">Sirve para escribir números <b>muy grandes o muy pequeños</b> de forma más sencilla.</p>
+
+  <div class="card">
+    <p class="def">Forma general: un número en notación científica se escribe <b>a × 10<sup>n</sup></b>.</p>
+    <div class="anatomy">
+      <svg viewBox="0 0 520 190" aria-label="Anatomía de la notación científica a por diez a la n">
+        <text x="110" y="110" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="64" fill="var(--coef)">a</text>
+        <text x="205" y="110" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="600" font-size="48" fill="var(--fg)">× 10</text>
+        <text x="320" y="78" text-anchor="middle" font-family="Fredoka,sans-serif" font-weight="700" font-size="46" fill="var(--expo)">n</text>
+        <line x1="110" y1="128" x2="110" y2="158" stroke="var(--coef)" stroke-width="2.5"/>
+        <text x="110" y="178" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="14" fill="var(--coef)">coeficiente: 1 ≤ a &lt; 10</text>
+        <line x1="325" y1="56" x2="400" y2="32" stroke="var(--expo)" stroke-width="2.5"/>
+        <text x="455" y="30" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="14" fill="var(--expo)">exponente:</text>
+        <text x="455" y="48" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="14" fill="var(--expo)">entero (+ o −)</text>
+      </svg>
+    </div>
+    <ul class="clean def">
+      <li><b style="color:var(--coef)">a</b> es un número <b>mayor o igual que 1 y menor que 10</b>.</li>
+      <li><b style="color:var(--expo)">n</b> es un número <b>entero</b> (positivo o negativo).</li>
+    </ul>
+    <p class="def" style="margin-top:10px;color:var(--muted)">Ejemplos correctos: 1,5 × 10<sup>-4</sup> · 9,7 × 10<sup>6</sup> · 3,68 × 10<sup>-3</sup> · 1,0006 × 10<sup>15</sup>.</p>
+  </div>
+
+  <div class="note"><b>¿Cuántos decimales lleva "a"?</b> No hay un número fijo. Si viene de una operación, se usan las <b>cifras significativas</b> necesarias; si no hay información suficiente, se suele dejar con <b>2 decimales</b> (redondeando).</div>
+
+  <h3 class="blk">Notación decimal</h3>
+  <div class="card def">
+    Es escribir los números en el sistema decimal; puede tener parte decimal o no. Un entero también está en notación decimal: <code>27 = 27,0 = 27,00 = 27,000</code>. Agregar ceros a la derecha <b>no cambia el valor</b>; solo comunica la precisión.
+  </div>
+
+  <h3 class="blk">Decimal → científica</h3>
+  <div class="steps">
+    <div class="step"><div class="st-body"><b>Ubicá la coma</b> decimal en el número original.</div></div>
+    <div class="step"><div class="st-body"><b>Mové la coma</b> hasta dejar un número entre 1 y 10 (ese será "a").</div></div>
+    <div class="step"><div class="st-body"><b>Contá los espacios</b> que moviste: esa cantidad es el exponente. Izquierda → <b>exponente positivo</b>; derecha → <b>exponente negativo</b>.</div></div>
+    <div class="step"><div class="st-body"><b>Armá</b> la notación: a × 10<sup>n</sup>. Revisá cifras significativas o 2 decimales; redondeá si hace falta.</div></div>
+  </div>
+  <div class="worked">
+    <div class="def">Número grande: <b>45 000</b></div>
+    <div class="eq">45 000 → 4,5 → movió 4 a la izquierda → <b style="color:var(--coef)">4,5 × 10<sup>4</sup></b></div>
+    <div class="def" style="margin-top:12px">Número pequeño: <b>0,00032</b></div>
+    <div class="eq">0,00032 → 3,2 → movió 4 a la derecha → <b style="color:var(--expo)">3,2 × 10<sup>-4</sup></b></div>
+  </div>
+
+  <h3 class="blk">Científica → decimal</h3>
+  <div class="steps">
+    <div class="step"><div class="st-body"><b>Observá el exponente.</b> Positivo → mover la coma a la <b>derecha</b>; negativo → a la <b>izquierda</b>.</div></div>
+    <div class="step"><div class="st-body"><b>Mové la coma</b> tantos espacios como indica el exponente.</div></div>
+    <div class="step"><div class="st-body"><b>Colocá la coma</b> en la nueva posición.</div></div>
+    <div class="step"><div class="st-body"><b>Rellená con ceros</b> los espacios vacíos. (Lo que se cuenta son los espacios de la coma, no los ceros.)</div></div>
+  </div>
+  <div class="worked">
+    <div class="eq">4,5 × 10<sup>4</sup> → mover 4 a la derecha → <b>45 000</b></div>
+    <div class="eq" style="margin-top:8px">3,2 × 10<sup>-4</sup> → mover 4 a la izquierda → <b>0,00032</b></div>
+  </div>
+</section>
+
+<!-- UNIDADES -->
+<section class="panel hide" id="unidades" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivos 3 y 4</span> Unidades y prefijos</h2>
+  <p class="lead">El <b>Sistema Internacional de Unidades (SI)</b> nació del sistema métrico decimal (Revolución Francesa) para unificar las mediciones en todo el mundo. La <b>metrología</b> es la ciencia que estudia las mediciones.</p>
+
+  <h3 class="blk">Unidades fundamentales</h3>
+  <p class="def" style="color:var(--muted)">Son las unidades base del SI (una por cada magnitud fundamental).</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Magnitud</th><th>Unidad</th><th>Símbolo</th></tr></thead>
+      <tbody>
+        <tr><td>Masa</td><td>kilogramo</td><td><code>kg</code></td></tr>
+        <tr><td>Longitud</td><td>metro</td><td><code>m</code></td></tr>
+        <tr><td>Tiempo</td><td>segundo</td><td><code>s</code></td></tr>
+        <tr><td>Corriente eléctrica</td><td>amperio</td><td><code>A</code></td></tr>
+        <tr><td>Temperatura</td><td>kelvin</td><td><code>K</code></td></tr>
+        <tr><td>Cantidad de sustancia</td><td>mol</td><td><code>mol</code></td></tr>
+        <tr><td>Intensidad luminosa</td><td>candela</td><td><code>cd</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="blk">Unidades derivadas</h3>
+  <p class="def" style="color:var(--muted)">Se obtienen combinando unidades fundamentales con multiplicación o división.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Unidad</th><th>Símbolo</th></tr></thead>
+      <tbody>
+        <tr><td>Metro cuadrado (área)</td><td><code>m²</code></td></tr>
+        <tr><td>Metro cúbico (volumen)</td><td><code>m³</code></td></tr>
+        <tr><td>Kilogramo por metro cúbico (densidad)</td><td><code>kg/m³</code></td></tr>
+        <tr><td>Metro por segundo (velocidad)</td><td><code>m/s</code></td></tr>
+        <tr><td>Metro por segundo al cuadrado (aceleración)</td><td><code>m/s²</code></td></tr>
+        <tr><td>Newton (fuerza)</td><td><code>N</code></td></tr>
+        <tr><td>Julio o joule (energía)</td><td><code>J</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="blk">Prefijos del SI</h3>
+  <p class="def" style="color:var(--muted)">Multiplican o dividen una unidad por potencias de 10. Su valor se usa en notación científica (1 × 10<sup>x</sup>). Estos son los más usados:</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Prefijo</th><th>Símbolo</th><th class="num">Potencia de 10</th></tr></thead>
+      <tbody>
+        <tr><td>giga</td><td><code>G</code></td><td class="num">10<sup>9</sup></td></tr>
+        <tr><td>mega</td><td><code>M</code></td><td class="num">10<sup>6</sup></td></tr>
+        <tr><td>kilo</td><td><code>k</code></td><td class="num">10<sup>3</sup></td></tr>
+        <tr><td>hecto</td><td><code>h</code></td><td class="num">10<sup>2</sup></td></tr>
+        <tr><td>deca</td><td><code>da</code></td><td class="num">10<sup>1</sup></td></tr>
+        <tr><td><b>unidad</b></td><td>—</td><td class="num">10<sup>0</sup></td></tr>
+        <tr><td>deci</td><td><code>d</code></td><td class="num">10<sup>-1</sup></td></tr>
+        <tr><td>centi</td><td><code>c</code></td><td class="num">10<sup>-2</sup></td></tr>
+        <tr><td>mili</td><td><code>m</code></td><td class="num">10<sup>-3</sup></td></tr>
+        <tr><td>micro</td><td><code>μ</code></td><td class="num">10<sup>-6</sup></td></tr>
+        <tr><td>nano</td><td><code>n</code></td><td class="num">10<sup>-9</sup></td></tr>
+        <tr><td>pico</td><td><code>p</code></td><td class="num">10<sup>-12</sup></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note"><b>Tip:</b> el folleto trae la tabla completa de quetta (10<sup>30</sup>) a quecto (10<sup>-30</sup>). Para la prueba, memorizá bien de giga a nano, que son los que más aparecen.</div>
+</section>
+
+<!-- CONVERSIONES -->
+<section class="panel hide" id="conversiones" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivo 5</span> Conversiones</h2>
+  <p class="lead">Convertir es expresar una misma cantidad en otra unidad, sin cambiar su valor real. Hay <b>5 tipos</b>.</p>
+
+  <div class="card">
+    <h4 style="font-family:var(--font-display);font-size:16px">La idea base: el factor de conversión (FC)</h4>
+    <p class="def" style="margin-top:8px">Se multiplica la cantidad por una fracción que vale 1: arriba va la <b>unidad deseada</b> y abajo la <b>unidad dada</b>, para que la unidad original se cancele.</p>
+    <div class="worked"><div class="eq" style="text-align:center">unidad dada × ( unidad deseada / unidad dada )</div></div>
+  </div>
+
+  <h3 class="blk">1 · Unidades dadas (no convencionales)</h3>
+  <p class="def" style="color:var(--muted)">Usan equivalencias internacionales establecidas.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Magnitud</th><th>Unidad</th><th>Equivalencia</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4">Longitud</td><td>1 pulgada (in)</td><td>2,54 cm</td></tr>
+        <tr><td>1 pie (ft)</td><td>30,48 cm</td></tr>
+        <tr><td>1 milla (mi)</td><td>1609,34 m</td></tr>
+        <tr><td>1 yarda (yd)</td><td>0,9144 m (91,44 cm)</td></tr>
+        <tr><td rowspan="2">Masa</td><td>1 onza (oz)</td><td>28,35 g</td></tr>
+        <tr><td>1 libra (lb)</td><td>453,59 g</td></tr>
+        <tr><td>Volumen</td><td>1 galón (gal)</td><td>3,78 L</td></tr>
+        <tr><td>Superficie</td><td>1 acre</td><td>4046,86 m²</td></tr>
+        <tr><td rowspan="2">Tiempo</td><td>1 hora (h)</td><td>3600 s</td></tr>
+        <tr><td>1 minuto (min)</td><td>60 s</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="worked">
+    <div class="def"><b>Ejemplo:</b> una cerca mide 3 millas, ¿cuántos metros son?</div>
+    <div class="eq">3 mi × ( 1609,34 m / 1 mi ) = <b>4828,02 m</b></div>
+  </div>
+
+  <h3 class="blk">2 · Unidades fundamentales (prefijo ↔ fundamental)</h3>
+  <p class="def" style="color:var(--muted)">El valor del prefijo se coloca en notación científica en la unidad fundamental.</p>
+  <div class="worked">
+    <div class="def"><b>Ejemplo:</b> 8 Mg a g. Mega = 10<sup>6</sup>.</div>
+    <div class="eq">8 Mg × ( 1 × 10<sup>6</sup> g / 1 Mg ) = 8 000 000 g = <b>8,00 × 10<sup>6</sup> g</b></div>
+  </div>
+
+  <h3 class="blk">3 · Conversiones con prefijos (prefijo ↔ prefijo) · método de la resta</h3>
+  <div class="steps">
+    <div class="step"><div class="st-body"><b>Identificá los prefijos</b> (su valor como 10<sup>x</sup>).</div></div>
+    <div class="step"><div class="st-body"><b>Armá el esquema</b> de conversión con las unidades.</div></div>
+    <div class="step"><div class="st-body"><b>Restá los exponentes:</b> exponente de la unidad dada − exponente de la unidad deseada.</div></div>
+    <div class="step"><div class="st-body">Ese resultado es el <b>nuevo exponente</b>. Pasá a notación científica.</div></div>
+  </div>
+  <div class="worked">
+    <div class="def"><b>Ejemplo:</b> 25 cm a nm. centi = 10<sup>-2</sup>, nano = 10<sup>-9</sup>.</div>
+    <div class="eq">(−2) − (−9) = 7 → 25 × 10<sup>7</sup> nm = <b>2,5 × 10<sup>8</sup> nm</b></div>
+  </div>
+
+  <h3 class="blk">4 · Unidades derivadas</h3>
+  <p class="def" style="color:var(--muted)">Como la unidad derivada tiene dos unidades (ej. km/h), se usa <b>un factor de conversión por cada una</b>.</p>
+  <div class="worked">
+    <div class="def"><b>Ejemplo:</b> 72 km/h a m/s.</div>
+    <div class="eq">72 km/h × ( 1 × 10<sup>3</sup> m / 1 km ) × ( 1 h / 3600 s ) = <b>20 m/s</b></div>
+  </div>
+
+  <div class="note"><b>Y el 5.º tipo:</b> las <b>conversiones entre escalas de temperatura</b> tienen su propia pestaña, porque no usan factor de conversión sino fórmulas. 👉 pestaña <b>Temperatura</b>.</div>
+</section>
+
+<!-- TEMPERATURA -->
+<section class="panel hide" id="temperatura" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Objetivo 5</span> Escalas de temperatura</h2>
+  <p class="lead">Existen 3 escalas: <b>Celsius</b>, <b>Kelvin</b> y <b>Fahrenheit</b>. Se convierten con fórmulas.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Escala</th><th>Puntos de referencia</th></tr></thead>
+      <tbody>
+        <tr><td><b>Celsius (°C)</b></td><td>0 °C: congelación del agua · 100 °C: ebullición del agua (a nivel del mar).</td></tr>
+        <tr><td><b>Kelvin (K)</b></td><td>Escala del SI. 0 K es el <b>cero absoluto</b> (−273,15 °C): la temperatura más baja posible.</td></tr>
+        <tr><td><b>Fahrenheit (°F)</b></td><td>El agua se congela a 32 °F y hierve a 212 °F.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="blk">Fórmulas</h3>
+  <div class="grid2">
+    <div class="card def"><b>Celsius → Kelvin</b><div class="worked" style="margin-top:8px"><div class="eq">K = °C + 273,15</div></div></div>
+    <div class="card def"><b>Kelvin → Celsius</b><div class="worked" style="margin-top:8px"><div class="eq">°C = K − 273,15</div></div></div>
+    <div class="card def"><b>Celsius → Fahrenheit</b><div class="worked" style="margin-top:8px"><div class="eq">°F = ( 9/5 × °C ) + 32</div></div></div>
+    <div class="card def"><b>Fahrenheit → Celsius</b><div class="worked" style="margin-top:8px"><div class="eq">°C = 5/9 × ( °F − 32 )</div></div></div>
+  </div>
+
+  <h3 class="blk">Ejemplos resueltos</h3>
+  <div class="worked">
+    <div class="def"><b>25 °C a Kelvin:</b></div>
+    <div class="eq">K = 25 + 273,15 = <b>298,15 K</b></div>
+    <div class="def" style="margin-top:12px"><b>30 °C a Fahrenheit:</b></div>
+    <div class="eq">°F = ( 9/5 × 30 ) + 32 = <b>86 °F</b></div>
+  </div>
+</section>
+
+<!-- CIFRAS -->
+<section class="panel hide" id="cifras" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">Transversal</span> Cifras significativas y redondeo</h2>
+  <p class="lead">Este contenido se evalúa en toda la prueba: es la forma correcta de reportar resultados en cálculos científicos.</p>
+  <div class="card def">
+    <p>Al dar un resultado (por ejemplo, después de una conversión), no basta el número: importa <b>cómo lo reportás</b>.</p>
+    <ul class="clean" style="margin-top:10px">
+      <li>Acompañá siempre el resultado con su <b>unidad</b>.</li>
+      <li>Usá la <b>cantidad de cifras significativas</b> adecuada; si no hay información suficiente, el folleto sugiere trabajar con <b>2 decimales</b>.</li>
+      <li>Si el número no cumple, hay que <b>redondear</b>.</li>
+    </ul>
+  </div>
+  <div class="note"><b>Ejemplo:</b> 3 mi × (1609,34 m / 1 mi) = 4828,02 m → se reporta <b>4828,02 m</b> (con unidad y 2 decimales), no "4828,02" a secas.</div>
+</section>
+
+<!-- PRACTICA -->
+<section class="panel hide" id="practica" role="tabpanel" tabindex="-1">
+  <h2 class="sec"><span class="sec-tag">A practicar</span> Poné a prueba lo que sabés</h2>
+  <p class="lead">Cuestionario de opción múltiple y tres actividades para clasificar. Todo con puntaje y explicación al instante.</p>
+
+  <h3 class="blk">1 · Cuestionario</h3>
+  <div id="quiz"></div>
+  <div class="scorebar">
+    <span class="s" id="quizScore">Puntaje: 0 / 12</span>
+    <button class="btn ghost" id="quizReset">Reiniciar</button>
+  </div>
+
+  <h3 class="blk">2 · ¿Está bien escrita en notación científica?</h3>
+  <div class="sorter" id="sortNC"></div>
+
+  <h3 class="blk">3 · Al pasar de decimal a científica, ¿el exponente es…?</h3>
+  <div class="sorter" id="sortEXP"></div>
+
+  <h3 class="blk">4 · ¿Unidad fundamental o derivada?</h3>
+  <div class="sorter" id="sortUF"></div>
+</section>
+
+<footer>Guía de estudio hecha con base en los folletos de la profesora Dahian Rojas Mora · Liceo HHC Experimental Bilingüe José Figueres Ferrer</footer>
+</main>
+
+<script>
+/* tema */
+(function(){
+  var btn=document.getElementById('themeBtn');
+  function cur(){var a=document.documentElement.getAttribute('data-theme');if(a)return a;return matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';}
+  function set(t){document.documentElement.setAttribute('data-theme',t);btn.textContent=t==='dark'?'☀️':'🌙';try{localStorage.setItem('med-theme',t);}catch(e){}}
+  try{var s=localStorage.getItem('med-theme');if(s)set(s);else btn.textContent=cur()==='dark'?'☀️':'🌙';}catch(e){btn.textContent=cur()==='dark'?'☀️':'🌙';}
+  btn.addEventListener('click',function(){set(cur()==='dark'?'light':'dark');});
+})();
+/* navegación */
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('.nav-scroll [role=tab]'));
+  var panels={};document.querySelectorAll('.panel').forEach(function(p){panels[p.id]=p;});
+  function show(id){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.tab===id?'true':'false');});
+    for(var k in panels){panels[k].classList.toggle('hide',k!==id);}
+    var p=panels[id];if(p){p.focus({preventScroll:true});}
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(location.hash.slice(1)!==id){history.replaceState(null,'','#'+id);}
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab);});});
+  var h=location.hash.slice(1);if(h&&panels[h])show(h);
+})();
+/* cuestionario */
+(function(){
+  var Q=[
+    {q:'¿Cuál es la forma general de la notación científica?',o:['a + 10 × n','a × 10ⁿ','n × 10ᵃ','10 × aⁿ'],a:1,e:'Es a × 10ⁿ, con "a" el coeficiente y "n" el exponente.'},
+    {q:'Para que esté bien escrita, el coeficiente "a" debe ser…',o:['Mayor o igual que 1 y menor que 10','Cualquier número','Mayor que 10','Un número entero'],a:0,e:'La regla es 1 ≤ a < 10.'},
+    {q:'El exponente "n" siempre debe ser…',o:['Positivo','Un número con decimales','Un número entero (positivo o negativo)','Menor que 10'],a:2,e:'"n" es un entero; puede ser positivo o negativo.'},
+    {q:'¿Cuál NÚMERO está bien escrito en notación científica?',o:['87,65 × 10³','11,5 × 10⁹','3,21 × 10⁻³','1,002 × 11⁸'],a:2,e:'3,21 cumple 1 ≤ a < 10 y la base es 10. Los otros fallan en "a" o en la base.'},
+    {q:'45 000 en notación científica es…',o:['4,5 × 10⁻⁴','45 × 10³','4,5 × 10⁴','4,5 × 10⁵'],a:2,e:'La coma se movió 4 lugares a la izquierda → exponente +4.'},
+    {q:'0,00032 en notación científica es…',o:['3,2 × 10⁴','3,2 × 10⁻⁴','32 × 10⁻⁵','3,2 × 10⁻³'],a:1,e:'La coma se movió 4 lugares a la derecha → exponente −4.'},
+    {q:'¿Cuál es una unidad FUNDAMENTAL del SI?',o:['m/s','Newton (N)','kilogramo (kg)','m³'],a:2,e:'El kilogramo es fundamental. m/s, N y m³ son derivadas.'},
+    {q:'¿Cuánto vale el prefijo "kilo" (k)?',o:['10⁻³','10³','10⁶','10²'],a:1,e:'kilo = 10³ (mil).'},
+    {q:'El prefijo "centi" (c) equivale a…',o:['10⁻²','10²','10⁻³','10⁻⁶'],a:0,e:'centi = 10⁻² (una centésima).'},
+    {q:'¿Qué fórmula convierte de Celsius a Kelvin?',o:['K = °C − 273,15','K = °C + 273,15','K = (9/5 × °C) + 32','K = 5/9 (°C − 32)'],a:1,e:'K = °C + 273,15. Por eso 25 °C = 298,15 K.'},
+    {q:'Para convertir 25 cm a nm con el método de la resta, el nuevo exponente es…',o:['(−2) − (−9) = 7','(−9) − (−2) = −7','(−2) + (−9) = −11','2 − 9 = −7'],a:0,e:'Exponente dado − exponente deseado: (−2)−(−9)=7 → 2,5 × 10⁸ nm.'},
+    {q:'¿Por qué se reporta "4828,02 m" y no solo "4828,02"?',o:['Porque se ve más ordenado','Porque hay que incluir la unidad y las cifras correctas','Porque el número es grande','No importa, son iguales'],a:1,e:'Un resultado científico siempre lleva su unidad y la cantidad adecuada de cifras significativas.'}
+  ];
+  var wrap=document.getElementById('quiz'),scoreEl=document.getElementById('quizScore'),answered={},score=0;
+  function render(){
+    wrap.innerHTML=Q.map(function(item,i){
+      var opts=item.o.map(function(txt,j){return '<button class="opt" data-q="'+i+'" data-o="'+j+'"><span class="mk">'+String.fromCharCode(65+j)+'</span><span>'+txt+'</span></button>';}).join('');
+      return '<div class="quiz-q"><div class="qn">PREGUNTA '+(i+1)+'</div><div class="qt">'+item.q+'</div><div class="opts">'+opts+'</div><div class="feedback" id="fb-'+i+'"></div></div>';
+    }).join('');
+  }
+  render();
+  wrap.addEventListener('click',function(ev){
+    var b=ev.target.closest('.opt');if(!b)return;
+    var qi=+b.dataset.q,oi=+b.dataset.o;if(answered[qi]!=null)return;answered[qi]=oi;
+    var item=Q[qi];
+    wrap.querySelectorAll('.opt[data-q="'+qi+'"]').forEach(function(x){x.disabled=true;var j=+x.dataset.o;if(j===item.a)x.classList.add('correct');else if(j===oi)x.classList.add('wrong');});
+    var fb=document.getElementById('fb-'+qi),ok=oi===item.a;if(ok)score++;
+    fb.className='feedback show '+(ok?'ok':'no');fb.innerHTML=(ok?'<b>¡Correcto! </b>':'<b>Casi. </b>')+item.e;
+    scoreEl.textContent='Puntaje: '+score+' / '+Q.length;
+  });
+  scoreEl.textContent='Puntaje: 0 / '+Q.length;
+  document.getElementById('quizReset').addEventListener('click',function(){answered={};score=0;render();scoreEl.textContent='Puntaje: 0 / '+Q.length;});
+})();
+/* clasificadores */
+function makeSorter(mountId,cfg){
+  var el=document.getElementById(mountId),idx=0,hits=0,results=[],pool=cfg.items.slice();
+  function render(){
+    if(idx>=pool.length){
+      el.innerHTML='<div style="text-align:center;padding:10px 4px"><div style="font-family:var(--font-display);font-weight:700;font-size:20px">¡Listo! '+hits+' / '+pool.length+'</div><div style="color:var(--muted);margin-top:4px">'+(hits===pool.length?'Dominás este tema. 🎉':'Repasá las que fallaste y volvé a intentarlo.')+'</div><button class="btn ghost" style="margin-top:12px" data-reset="1">Volver a empezar</button></div>';return;
+    }
+    var it=pool[idx];
+    var dots=pool.map(function(_,i){var cls='pill-done';if(results[i]==='hit')cls+=' hit';else if(results[i]==='miss')cls+=' miss';return '<span class="'+cls+'"></span>';}).join('');
+    var btns=cfg.cats.map(function(c){return '<button class="catbtn" data-cat="'+c.key+'">'+c.label+'</button>';}).join('');
+    el.innerHTML='<div class="item">'+it.t+'</div><div class="cats">'+btns+'</div><div class="fb" id="'+mountId+'-fb"></div><div class="prog"><span>'+(idx+1)+' de '+pool.length+'</span><span>'+dots+'</span></div>';
+  }
+  render();
+  el.addEventListener('click',function(ev){
+    if(ev.target.dataset.reset){idx=0;hits=0;results=[];render();return;}
+    var b=ev.target.closest('.catbtn');if(!b)return;
+    var it=pool[idx],ok=b.dataset.cat===it.cat;if(ok)hits++;results[idx]=ok?'hit':'miss';
+    el.querySelectorAll('.catbtn').forEach(function(x){x.disabled=true;});
+    var fb=document.getElementById(mountId+'-fb'),catLabel=cfg.cats.filter(function(c){return c.key===it.cat;})[0].label;
+    fb.className='fb '+(ok?'ok':'no');fb.innerHTML=(ok?'✓ ¡Correcto! ':'✗ Era '+catLabel+'. ')+(it.e||'');
+    setTimeout(function(){idx++;render();},ok?750:1600);
+  });
+}
+makeSorter('sortNC',{
+  cats:[{key:'ok',label:'Correcta'},{key:'no',label:'Incorrecta'}],
+  items:[
+    {t:'1,5 × 10⁸',cat:'ok',e:'a entre 1 y 10, exponente entero, base 10.'},
+    {t:'87,65 × 10³',cat:'no',e:'a = 87,65 no está entre 1 y 10.'},
+    {t:'3,21 × 10⁻³',cat:'ok',e:'Cumple todas las reglas.'},
+    {t:'11,5 × 10⁹',cat:'no',e:'a = 11,5 es mayor que 10.'},
+    {t:'1,002 × 11⁸',cat:'no',e:'La base debe ser 10, no 11.'},
+    {t:'9,425 × 10⁻¹²',cat:'ok',e:'Correcta: a válido y exponente entero.'}
+  ]
+});
+makeSorter('sortEXP',{
+  cats:[{key:'pos',label:'Positivo (+)'},{key:'neg',label:'Negativo (−)'}],
+  items:[
+    {t:'45 000',cat:'pos',e:'Número grande → la coma se mueve a la izquierda → exponente +.'},
+    {t:'0,00032',cat:'neg',e:'Número pequeño → la coma se mueve a la derecha → exponente −.'},
+    {t:'543',cat:'pos',e:'5,43 × 10² → exponente positivo.'},
+    {t:'0,000003528',cat:'neg',e:'3,528 × 10⁻⁶ → exponente negativo.'},
+    {t:'3542,73',cat:'pos',e:'3,54273 × 10³ → exponente positivo.'},
+    {t:'0,0000000000000371',cat:'neg',e:'Número muy pequeño → exponente negativo.'}
+  ]
+});
+makeSorter('sortUF',{
+  cats:[{key:'fund',label:'Fundamental'},{key:'deriv',label:'Derivada'}],
+  items:[
+    {t:'metro (m)',cat:'fund',e:'Es unidad base del SI.'},
+    {t:'m/s (velocidad)',cat:'deriv',e:'Combina metro ÷ segundo.'},
+    {t:'kilogramo (kg)',cat:'fund',e:'Unidad base de masa.'},
+    {t:'Newton (N)',cat:'deriv',e:'Se forma a partir de kg · m/s².'},
+    {t:'segundo (s)',cat:'fund',e:'Unidad base de tiempo.'},
+    {t:'kg/m³ (densidad)',cat:'deriv',e:'Combina kilogramo ÷ metro cúbico.'}
+  ]
+});
+</script>
+
+</body>
+</html>
