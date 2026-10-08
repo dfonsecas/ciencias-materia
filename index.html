@@ -1,123 +1,122 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sitio en Mantenimiento</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --text-color: #f8fafc;
-            --accent-color: #38bdf8;
-            --muted-color: #94a3b8;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  html,body{margin:0}
+  body{font:14px system-ui,-apple-system,"Segoe UI",sans-serif;background:#faf9f7}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Guías de estudio — Ciencias 7°</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800&display=swap">
+<style>
+/* Portal de acceso a las guías. Dos tarjetas-enlace, cada una con el color de su tema
+   (teal = Materia, índigo = Medición), sobre un fondo tranquilo tipo cuaderno. */
+:root{
+  --bg:#eef1f6; --surface:#ffffff; --fg:#17202b; --muted:#5b6673; --border:#d9e0ea;
+  --materia:#0d7b86; --materia-ink:#0a5d66; --materia-soft:#d6edef;
+  --medicion:#3f51d6; --medicion-ink:#2f3cae; --medicion-soft:#e0e4fb;
+  --shadow:0 1px 2px rgba(20,32,43,.06),0 8px 26px rgba(20,32,43,.08);
+  --font-display:"Fredoka","Trebuchet MS",sans-serif;
+  --font-body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f151d; --surface:#18212c; --fg:#e8eef4; --muted:#9aabb9; --border:#293543;
+  --materia:#36b7c1; --materia-ink:#8fe0e6; --materia-soft:#143a3e;
+  --medicion:#7d8bf2; --medicion-ink:#aab4f7; --medicion-soft:#242a4a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.4);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f151d; --surface:#18212c; --fg:#e8eef4; --muted:#9aabb9; --border:#293543;
+  --materia:#36b7c1; --materia-ink:#8fe0e6; --materia-soft:#143a3e;
+  --medicion:#7d8bf2; --medicion-ink:#aab4f7; --medicion-soft:#242a4a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 26px rgba(0,0,0,.4);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);line-height:1.55;margin:0;min-height:100%}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.14;text-wrap:balance;margin:0}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:760px;margin:0 auto;padding-inline:20px;padding-block:0}
+.hero{padding-block:46px 10px;text-align:center}
+.eyebrow{font-family:var(--font-display);font-weight:500;letter-spacing:.15em;text-transform:uppercase;font-size:12.5px;color:var(--muted)}
+.hero h1{font-size:clamp(30px,7vw,48px);font-weight:700;margin-top:8px;background:linear-gradient(100deg,var(--materia),var(--medicion));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:16.5px;max-width:52ch;margin:12px auto 0}
+.meta{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px}
+.meta span{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:5px 13px;font-size:13.5px;font-weight:700;box-shadow:var(--shadow)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:30px}
+.gcard{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:var(--shadow);border-top:5px solid var(--c);transition:transform .14s,box-shadow .14s}
+.gcard:hover{transform:translateY(-3px);box-shadow:0 10px 34px rgba(20,32,43,.14)}
+.gcard:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.badge{align-self:flex-start;font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--soft);border-radius:999px;padding:4px 11px}
+.gcard h2{font-size:23px;margin-top:14px}
+.gcard p{color:var(--muted);font-size:15px;margin-top:8px;flex:1}
+.gcard ul{margin:12px 0 0;padding-left:18px;font-size:13.5px;color:var(--muted)}
+.gcard li{margin-bottom:4px}
+.go{margin-top:18px;align-self:flex-start;display:inline-flex;align-items:center;gap:7px;font-family:var(--font-display);font-weight:600;font-size:15px;color:#fff;background:var(--c);border-radius:11px;padding:9px 17px}
+.m-materia{--c:var(--materia);--ink:var(--materia-ink);--soft:var(--materia-soft)}
+.m-medicion{--c:var(--medicion);--ink:var(--medicion-ink);--soft:var(--medicion-soft)}
+.tip{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-top:26px;font-size:14px;color:var(--muted);box-shadow:var(--shadow)}
+.tip b{color:var(--fg);font-family:var(--font-display);font-weight:600}
+footer{color:var(--muted);font-size:13px;text-align:center;padding-block:26px 34px}
+</style>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            animation: fadeIn 1.2s ease-out;
-        }
-
-        .icon-container {
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        /* Tuerca animada en CSS */
-        .gear {
-            font-size: 5rem;
-            display: inline-block;
-            animation: rotate 4s linear infinite;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.05em;
-        }
-
-        h1 span {
-            color: var(--accent-color);
-        }
-
-        p {
-            font-size: 1.125rem;
-            color: var(--muted-color);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .badge {
-            display: inline-block;
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent-color);
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .footer {
-            margin-top: 3rem;
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-
-        /* Animaciones */
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <!-- Etiqueta de estado -->
-        <div class="badge">Actualización en curso</div>
-        
-        <!-- Icono animado -->
-        <div class="icon-container">
-            <span class="gear">⚙️</span>
-        </div>
-
-        <!-- Mensaje principal -->
-        <h1>Estamos mejorando <span>nuestro sitio</span></h1>
-        <p>Disculpa las molestias. En este momento nos encontramos realizando tareas de mantenimiento programadas para ofrecerte una mejor experiencia. Volveremos a estar en línea muy pronto.</p>
-        
-        <!-- Pie de página o contacto -->
-        <div class="footer">
-            &copy; 2026 dfonsecas. Si nos necesitas urgentemente, escríbenos
-        </div>
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Ciencias · Sétimo año</div>
+    <h1>Guías de estudio</h1>
+    <p>Repasá para la prueba del III período con guías interactivas: teoría, diagramas, cuestionarios y actividades para practicar. Elegí un tema para empezar.</p>
+    <div class="meta">
+      <span>📅 Lunes 12 de octubre · 7:00 a.m.</span>
+      <span>📊 Vale 30%</span>
     </div>
+  </div>
+
+  <div class="cards">
+    <a class="gcard m-medicion" href="medicion1.html">
+      <span class="badge">Tema 1</span>
+      <h2>📐 Procesos de medición</h2>
+      <p>Notación científica y decimal, unidades y prefijos del SI, y los cinco tipos de conversiones.</p>
+      <ul>
+        <li>Notación científica ↔ decimal</li>
+        <li>Unidades fundamentales, derivadas y prefijos</li>
+        <li>Conversiones y escalas de temperatura</li>
+      </ul>
+      <span class="go">Abrir guía →</span>
+    </a>
+
+    <a class="gcard m-materia" href="materia1.html">
+      <span class="badge">Tema 2</span>
+      <h2>🧪 Materia</h2>
+      <p>Qué es la materia, sus propiedades, los estados de agregación y los cambios de la materia.</p>
+      <ul>
+        <li>Propiedades intensivas, extensivas, físicas y químicas</li>
+        <li>Estados y cambios de estado (con diagrama)</li>
+        <li>Cambios físicos y químicos · Materiales y ambiente</li>
+      </ul>
+      <span class="go">Abrir guía →</span>
+    </a>
+  </div>
+
+  <div class="tip">
+    <b>Cómo estudiar:</b> abrí cada guía, recorré las pestañas de teoría y terminá en <b>Practicá ✏️</b> para medir cómo vas. Las guías funcionan en celular y tienen modo claro/oscuro. ¡Mucho éxito en la prueba! 🍀
+  </div>
+</div>
+
+<footer>Guías de estudio hechas con base en el material de la profesora Dahian Rojas Mora.</footer>
+
+<script>
+(function(){
+  try{var t=localStorage.getItem('mat-theme')||localStorage.getItem('med-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+})();
+</script>
 
 </body>
 </html>
